@@ -7,7 +7,6 @@ import { SaveCartInLocalStorage } from "./utilizeFunction.js";
 // export
 export let card_container = document.getElementById("items");
 export let modal_content = document.querySelector(".modal-content");
-let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
 let cartIcon = document.getElementById("cart_id");
 let overlay = document.querySelector(".overlay");
 cartIcon.addEventListener("click", () => {

@@ -54,13 +54,11 @@ export let createItem = (product) => {
   });
   card_container.appendChild(card);
 };
-let cart = localStorage.getItem("shoppingCart")
-  ? JSON.parse(localStorage.getItem("shoppingCart"))
-  : [];
 
 export let showCartItems = () => {
-  let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
-
+  let cart = localStorage.getItem("shoppingCart")
+    ? JSON.parse(localStorage.getItem("shoppingCart"))
+    : [];
   modal_content.innerHTML = "";
   console.log(cart, "in showCartItems");
 
