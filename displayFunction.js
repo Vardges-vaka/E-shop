@@ -1,8 +1,8 @@
 import { item_adding_to_the_cart } from "./1.js";
 import { modal_content } from "./1.js";
-import { shoppingCart } from "./1.js";
+// import { shoppingCart } from "./1.js";
 import { card_container } from "./1.js";
-
+import { SaveCartInLocalStorage } from "./utilizeFunction.js";
 export let createItem = (product) => {
   let { image, title, price } = product;
   // creating a container for a single product
@@ -54,6 +54,9 @@ export let createItem = (product) => {
   });
   card_container.appendChild(card);
 };
+ let shoppingCart = localStorage.getItem("shoppingCart")
+  ? JSON.parse(localStorage.getItem("shoppingCart"))
+  : []
 export let showCartItems = () => {
   modal_content.innerHTML = "";
   shoppingCart.forEach((item) => {
@@ -89,22 +92,36 @@ export let showCartItems = () => {
     cartItem.appendChild(removeCartBTN_container);
     removeCartBTN_container.appendChild(removeCartBTN);
 
+    // new
     removeCartBTN.addEventListener("click", () => {
-      item = shoppingCart
-        .map((cartItem) => {
-          if (cartItem.id === item.id) {
-            return { ...cartItem, item_QNT: cartItem.item_QNT-- };
-          }
-          return cartItem;
-        })
-        .filter((cartItem) => cartItem.item_QNT > 0);
-
-      showCartItems();
-      console.log(shoppingCart, "Updated shopping cart after removal:");
+   shoppingCart= shoppingCart.filter((cartItem) => {
+        return cartItem.id !== item.id;
+      });
+      console.log(shoppingCart,"shopping cart")
+      SaveCartInLocalStorage(shoppingCart);
+      showCartItems()
     });
     modal_content.appendChild(cartItem);
   });
 };
+
+// old
+//     removeCartBTN.addEventListener("click", () => {
+//       item = shoppingCart
+//         .map((cartItem) => {
+//           if (cartItem.id === item.id) {
+//             return { ...cartItem, item_QNT: cartItem.item_QNT-- };
+//           }
+//           return cartItem;
+//         })
+//         .filter((cartItem) => cartItem.item_QNT > 0);
+
+//       showCartItems();
+//       console.log(shoppingCart, "Updated shopping cart after removal:");
+//     });
+//     modal_content.appendChild(cartItem);
+//   });
+// };
 
 // let updatedCAart=shoppingCart.filter((cartItem)=>{return cartItem.id!=item.id})
 // modal_content.removeChild(cartItem);

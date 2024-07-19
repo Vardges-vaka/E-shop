@@ -2,11 +2,14 @@
 import { apiCall } from "./ApiCall.js";
 import { showCartItems } from "./displayFunction.js";
 import { createItem } from "./displayFunction.js";
+import { SaveCartInLocalStorage } from "./utilizeFunction.js";
 
 // export
 export let card_container = document.getElementById("items");
 export let modal_content = document.querySelector(".modal-content");
-export let shoppingCart = [];
+export let shoppingCart = localStorage.getItem("shoppingCart")
+  ? JSON.parse(localStorage.getItem("shoppingCart"))
+  : [];
 
 let cartIcon = document.getElementById("cart_id");
 let overlay = document.querySelector(".overlay");
@@ -29,8 +32,7 @@ export let item_adding_to_the_cart = (product) => {
   });
   if (!isItemInCart) {
     shoppingCart.push({ ...product, item_QNT: 1 });
-    showCartItems();
-    // alert("You have already added this item in the cartIcon")
+    SaveCartInLocalStorage(shoppingCart);
   } else {
     shoppingCart.map((item) => {
       if ((item.id = product.id)) {
@@ -39,8 +41,10 @@ export let item_adding_to_the_cart = (product) => {
         return item;
       }
     });
+    showCartItems();
+    SaveCartInLocalStorage(shoppingCart);
   }
-  console.log(shoppingCart, "adding an item");
+  // console.log(shoppingCart, "adding an item");
 };
 
 window.onload = () => {
