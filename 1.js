@@ -7,43 +7,44 @@ import { SaveCartInLocalStorage } from "./utilizeFunction.js";
 // export
 export let card_container = document.getElementById("items");
 export let modal_content = document.querySelector(".modal-content");
-export let shoppingCart = localStorage.getItem("shoppingCart")
-  ? JSON.parse(localStorage.getItem("shoppingCart"))
-  : [];
-
+let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
 let cartIcon = document.getElementById("cart_id");
 let overlay = document.querySelector(".overlay");
-
 cartIcon.addEventListener("click", () => {
   overlay.style.display = "block";
+  showCartItems();
 });
-
 modal_content.addEventListener("click", (e) => {
   e.stopPropagation();
 });
-
 overlay.addEventListener("click", () => {
   overlay.style.display = "none";
 });
 
 export let item_adding_to_the_cart = (product) => {
-  let isItemInCart = shoppingCart.find((item) => {
+  let cart = localStorage.getItem("shoppingCart")
+    ? JSON.parse(localStorage.getItem("shoppingCart"))
+    : [];
+  let isItemInCart = cart?.find((item) => {
     return product.id == item.id;
   });
   if (!isItemInCart) {
-    shoppingCart.push({ ...product, item_QNT: 1 });
-    SaveCartInLocalStorage(shoppingCart);
+    cart.push({ ...product, item_QNT: 1 });
+    console.log(cart, "cart in item_adding-to-the-cart");
+    // console.log(shoppingCart, "cart");
   } else {
-    shoppingCart.map((item) => {
-      if ((item.id = product.id)) {
+    cart = cart.map((item) => {
+      if (item.id === product.id) {
         return { ...item, item_QNT: item.item_QNT++ };
       } else {
         return item;
       }
     });
-    showCartItems();
-    SaveCartInLocalStorage(shoppingCart);
   }
+  console.log(cart, "cart");
+
+  SaveCartInLocalStorage(cart);
+  showCartItems();
   // console.log(shoppingCart, "adding an item");
 };
 
