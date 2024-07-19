@@ -1,6 +1,6 @@
 import { item_adding_to_the_cart } from "./1.js";
 import { modal_content } from "./1.js";
-// import { shoppingCart } from "./1.js";
+//import { shoppingCart } from "./1.js";
 import { card_container } from "./1.js";
 import { SaveCartInLocalStorage } from "./utilizeFunction.js";
 export let createItem = (product) => {
@@ -54,12 +54,17 @@ export let createItem = (product) => {
   });
   card_container.appendChild(card);
 };
- let shoppingCart = localStorage.getItem("shoppingCart")
+let cart = localStorage.getItem("shoppingCart")
   ? JSON.parse(localStorage.getItem("shoppingCart"))
-  : []
+  : [];
+
 export let showCartItems = () => {
+  let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+
   modal_content.innerHTML = "";
-  shoppingCart.forEach((item) => {
+  console.log(cart, "in showCartItems");
+
+  cart.forEach((item) => {
     let { image, title, price } = item;
     let cartItem = document.createElement("div");
     let cart_img_container = document.createElement("div");
@@ -83,7 +88,7 @@ export let showCartItems = () => {
     cart_img.src = image;
     cartTitle.textContent = title;
     cartPrice.textContent = price + " aed";
-
+    // new
     cart_img_container.appendChild(cart_img);
     cartItem.appendChild(cart_img_container);
     cartItem.appendChild(title_price_container);
@@ -92,15 +97,12 @@ export let showCartItems = () => {
     cartItem.appendChild(removeCartBTN_container);
     removeCartBTN_container.appendChild(removeCartBTN);
 
-    // new
     removeCartBTN.addEventListener("click", () => {
-   shoppingCart= shoppingCart.filter((cartItem) => {
-        return cartItem.id !== item.id;
-      });
-      console.log(shoppingCart,"shopping cart")
-      SaveCartInLocalStorage(shoppingCart);
-      showCartItems()
+      cart = cart.filter((cartItem) => cartItem.id !== item.id);
+      SaveCartInLocalStorage(cart);
+      showCartItems();
     });
+
     modal_content.appendChild(cartItem);
   });
 };
